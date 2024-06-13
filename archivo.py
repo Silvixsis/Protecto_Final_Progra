@@ -1,7 +1,7 @@
 import json
 import os
 
-# Clases
+#Clases
 class Evento:
     def __init__(self, nombre, fecha, hora):
         self.nombre = nombre
