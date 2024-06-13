@@ -7,7 +7,7 @@
 **Integrantes:**  
 - Antonia Córdova  
 - Rodrigo Silva  
-- Oscar Valdebenito
+- Oscar Valdebenito Contreras
 
 
 ### Título del Proyecto:
