@@ -5,8 +5,8 @@
 ### Aplicación para la organización de torneos y competencias deportivas.
 
 **Integrantes:**  
-- Antonia Córdova  
-- Rodrigo Silva  
+- Antonia Córdova Reyes 
+- Rodrigo Silva Ruiz Díaz 
 - Oscar Valdebenito Contreras
 
 
