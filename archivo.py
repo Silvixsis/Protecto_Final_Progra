@@ -105,6 +105,69 @@ class SportPlanningManager:
         
         print("Datos cargados exitosamente.")
 
-#ahora vendría el menu con las distintas opciones...
+# Función principal para mostrar el menú y manejar la interacción del usuario
+def menu():
+    manager = SportPlanningManager()
+    manager.cargar_datos()
+    
+    while True:
+        print("\n--- Sport Planning Manager ---")
+        print("1. Agregar Evento")
+        print("2. Eliminar Evento")
+        print("3. Agregar Competidor")
+        print("4. Eliminar Competidor")
+        print("5. Mostrar Eventos")
+        print("6. Mostrar Competidores")
+        print("7. Modificar Evento")
+        print("8. Modificar Competidor")
+        print("9. Guardar Datos")
+        print("10. Salir")
+
+        opcion = input("Selecciona una opción: ")
+
+        if opcion == "1":
+            nombre = input("Nombre del evento: ")
+            fecha = input("Fecha del evento (dd-mm-aaaa): ")
+            hora = input("Hora del evento (hh:mm): ")
+            manager.agregar_evento(nombre, fecha, hora)
+        elif opcion == "2":
+            nombre = input("Nombre del evento a eliminar: ")
+            manager.eliminar_evento(nombre)
+        elif opcion == "3":
+            nombre = input("Nombre del competidor: ")
+            edad = input("Edad del competidor: ")
+            categoria = input("Categoría del competidor: ")
+            manager.agregar_competidor(nombre, edad, categoria)
+        elif opcion == "4":
+            nombre = input("Nombre del competidor a eliminar: ")
+            manager.eliminar_competidor(nombre)
+        elif opcion == "5":
+            manager.mostrar_eventos()
+        elif opcion == "6":
+            manager.mostrar_competidores()
+        elif opcion == "7":
+            nombre = input("Nombre del evento a modificar: ")
+            nuevo_nombre = input("Nuevo nombre del evento: ")
+            nueva_fecha = input("Nueva fecha del evento (dd-mm-aaaa): ")
+            nueva_hora = input("Nueva hora del evento (hh:mm): ")
+            manager.modificar_evento(nombre, nuevo_nombre, nueva_fecha, nueva_hora)
+        elif opcion == "8":
+            nombre = input("Nombre del competidor a modificar: ")
+            nuevo_nombre = input("Nuevo nombre del competidor: ")
+            nueva_edad = input("Nueva edad del competidor: ")
+            nueva_categoria = input("Nueva categoría del competidor: ")
+            manager.modificar_competidor(nombre, nuevo_nombre, nueva_edad, nueva_categoria)
+        elif opcion == "9":
+            manager.guardar_datos()
+        elif opcion == "10":
+            manager.guardar_datos()
+            print("Saliendo del programa...")
+            break
+        else:
+            print("Opción no válida. Por favor, intenta de nuevo.")
+
+
+if __name__ == "__main__":
+    menu()
 
 
