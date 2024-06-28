@@ -10,13 +10,15 @@ class Evento:
 
 # Clase que representa un competidor
 class Competidor:
-    def __init__(self, nombre, edad, categoria):
+    def __init__(self, nombre, apellido, edad, evento, categoria):
         self.nombre = nombre
+        self.apellido = apellido
         self.edad = edad
+        self.evento = evento
         self.categoria = categoria
 
 # Clase para manejar el almacenamiento de datos
-class DataManager:
+class ManejoDatos:
     @staticmethod
     def guardar_datos(eventos, competidores, archivo_eventos="eventos.json", archivo_competidores="competidores.json"):
         eventos_dict = [evento.__dict__ for evento in eventos]
@@ -70,18 +72,18 @@ class SportPlanningManager:
             print("Evento no encontrado.")
 
     # Función para agregar un competidor a la lista de competidores
-    def agregar_competidor(self, nombre, edad, categoria):
-        if any(competidor.nombre == nombre for competidor in self.competidores):
+    def agregar_competidor(self, nombre, apellido, edad, evento, categoria):
+        if any(competidor.nombre == nombre and competidor.apellido == apellido for competidor in self.competidores):
             print("El competidor ya existe.")
         else:
-            competidor = Competidor(nombre, edad, categoria)
+            competidor = Competidor(nombre, apellido, edad, evento, categoria)
             self.competidores.append(competidor)
             print("Competidor agregado exitosamente.")
 
     # Función para eliminar un competidor de la lista de competidores
-    def eliminar_competidor(self, nombre):
-        if any(competidor.nombre == nombre for competidor in self.competidores):
-            self.competidores = [competidor for competidor in self.competidores if competidor.nombre != nombre]
+    def eliminar_competidor(self, nombre, apellido):
+        if any(competidor.nombre == nombre and competidor.apellido == apellido for competidor in self.competidores):
+            self.competidores = [competidor for competidor in self.competidores if not (competidor.nombre == nombre and competidor.apellido == apellido)]
             print("Competidor eliminado exitosamente.")
         else:
             print("Competidor no encontrado.")
@@ -98,7 +100,7 @@ class SportPlanningManager:
     def mostrar_competidores(self):
         if self.competidores:
             for competidor in self.competidores:
-                print(f"Nombre: {competidor.nombre}, Edad: {competidor.edad}, Categoría: {competidor.categoria}")
+                print(f"Nombre: {competidor.nombre} {competidor.apellido}, Edad: {competidor.edad}, Evento: {competidor.evento}, Categoría: {competidor.categoria}")
         else:
             print("No hay competidores para mostrar.")
     
@@ -114,11 +116,13 @@ class SportPlanningManager:
         print("Evento no encontrado.")
 
     # Función para modificar los detalles de un competidor ya existente
-    def modificar_competidor(self, nombre, nuevo_nombre, nueva_edad, nueva_categoria):
+    def modificar_competidor(self, nombre, apellido, nuevo_nombre, nuevo_apellido, nueva_edad, nuevo_evento, nueva_categoria):
         for competidor in self.competidores:
-            if competidor.nombre == nombre:
+            if competidor.nombre == nombre and competidor.apellido == apellido:
                 competidor.nombre = nuevo_nombre
+                competidor.apellido = nuevo_apellido
                 competidor.edad = nueva_edad
+                competidor.evento = nuevo_evento
                 competidor.categoria = nueva_categoria
                 print("Competidor modificado exitosamente.")
                 return
@@ -127,7 +131,7 @@ class SportPlanningManager:
 # Función principal para mostrar el menú y manejar la interacción del usuario
 def menu():
     manager = SportPlanningManager()
-    manager.eventos, manager.competidores = DataManager.cargar_datos()
+    manager.eventos, manager.competidores = ManejoDatos.cargar_datos()
     
     while True:
         print("\n--- Sport Planning Manager ---")
@@ -154,12 +158,15 @@ def menu():
             manager.eliminar_evento(nombre)
         elif opcion == "3":
             nombre = input("Nombre del competidor: ")
+            apellido = input("Apellido del competidor: ")
             edad = input("Edad del competidor: ")
+            evento = input("Evento del competidor: ")
             categoria = input("Categoría del competidor: ")
-            manager.agregar_competidor(nombre, edad, categoria)
+            manager.agregar_competidor(nombre, apellido, edad, evento, categoria)
         elif opcion == "4":
             nombre = input("Nombre del competidor a eliminar: ")
-            manager.eliminar_competidor(nombre)
+            apellido = input("Apellido del competidor a eliminar: ")
+            manager.eliminar_competidor(nombre, apellido)
         elif opcion == "5":
             manager.mostrar_eventos()
         elif opcion == "6":
@@ -172,14 +179,17 @@ def menu():
             manager.modificar_evento(nombre, nuevo_nombre, nueva_fecha, nueva_hora)
         elif opcion == "8":
             nombre = input("Nombre del competidor a modificar: ")
+            apellido = input("Apellido del competidor a modificar: ")
             nuevo_nombre = input("Nuevo nombre del competidor: ")
+            nuevo_apellido = input("Nuevo apellido del competidor: ")
             nueva_edad = input("Nueva edad del competidor: ")
+            nuevo_evento = input("Nuevo evento del competidor: ")
             nueva_categoria = input("Nueva categoría del competidor: ")
-            manager.modificar_competidor(nombre, nuevo_nombre, nueva_edad, nueva_categoria)
+            manager.modificar_competidor(nombre, apellido, nuevo_nombre, nuevo_apellido, nueva_edad, nuevo_evento, nueva_categoria)
         elif opcion == "9":
-            DataManager.guardar_datos(manager.eventos, manager.competidores)
+            ManejoDatos.guardar_datos(manager.eventos, manager.competidores)
         elif opcion == "10":
-            DataManager.guardar_datos(manager.eventos, manager.competidores)
+            ManejoDatos.guardar_datos(manager.eventos, manager.competidores)
             print("Saliendo del programa...")
             break
         else:
@@ -187,6 +197,7 @@ def menu():
 
 if __name__ == "__main__":
     menu()
+
 
 
 
