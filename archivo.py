@@ -8,6 +8,9 @@ class Evento:
         self.fecha = fecha
         self.hora = hora
 
+    def mostrar_eventos(self):
+        print(f"Nombre: {self.nombre}, Fecha: {self.fecha}, Hora: {self.hora}")
+
 # Clase que representa un competidor
 class Competidor:
     def __init__(self, nombre, apellido, edad, evento, categoria):
@@ -16,6 +19,9 @@ class Competidor:
         self.edad = edad
         self.evento = evento
         self.categoria = categoria
+
+    def mostrar_competidores(self):
+        print(f"Nombre: {self.nombre} {self.apellido}, Edad: {self.edad}, Evento: {self.evento}, Categoría: {self.categoria}")
 
 # Clase para manejar el almacenamiento de datos
 class ManejoDatos:
@@ -51,8 +57,7 @@ class ManejoDatos:
 # Clase principal para gestionar los eventos y competidores
 class SportPlanningManager:
     def __init__(self):
-        self.eventos = [] 
-        self.competidores = [] 
+        self.eventos, self.competidores = ManejoDatos.cargar_datos()
 
     # Función para agregar un evento a la lista de eventos
     def agregar_evento(self, nombre, fecha, hora):
@@ -87,22 +92,6 @@ class SportPlanningManager:
             print("Competidor eliminado exitosamente.")
         else:
             print("Competidor no encontrado.")
-
-    # Función para mostrar todos los eventos
-    def mostrar_eventos(self):
-        if self.eventos:
-            for evento in self.eventos:
-                print(f"Nombre: {evento.nombre}, Fecha: {evento.fecha}, Hora: {evento.hora}")
-        else:
-            print("No hay eventos para mostrar.")
-
-    # Función para mostrar todos los competidores
-    def mostrar_competidores(self):
-        if self.competidores:
-            for competidor in self.competidores:
-                print(f"Nombre: {competidor.nombre} {competidor.apellido}, Edad: {competidor.edad}, Evento: {competidor.evento}, Categoría: {competidor.categoria}")
-        else:
-            print("No hay competidores para mostrar.")
     
     # Función para modificar los detalles de un evento ya existente
     def modificar_evento(self, nombre, nuevo_nombre, nueva_fecha, nueva_hora):
@@ -131,7 +120,6 @@ class SportPlanningManager:
 # Función principal para mostrar el menú y manejar la interacción del usuario
 def menu():
     manager = SportPlanningManager()
-    manager.eventos, manager.competidores = ManejoDatos.cargar_datos()
     
     while True:
         print("\n--- Sport Planning Manager ---")
@@ -168,9 +156,17 @@ def menu():
             apellido = input("Apellido del competidor a eliminar: ")
             manager.eliminar_competidor(nombre, apellido)
         elif opcion == "5":
-            manager.mostrar_eventos()
+            if manager.eventos:
+                for evento in manager.eventos:
+                    evento.mostrar_eventos()
+            else:
+                print("No hay eventos para mostrar.")
         elif opcion == "6":
-            manager.mostrar_competidores()
+            if manager.competidores:
+                for competidor in manager.competidores:
+                    competidor.mostrar_competidores()
+            else:
+                print("No hay competidores para mostrar.")
         elif opcion == "7":
             nombre = input("Nombre del evento a modificar: ")
             nuevo_nombre = input("Nuevo nombre del evento: ")
@@ -197,6 +193,8 @@ def menu():
 
 if __name__ == "__main__":
     menu()
+
+
 
 
 
