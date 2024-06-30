@@ -70,8 +70,9 @@ class SportPlanningManager:
 
     # Función para eliminar un evento de la lista de eventos
     def eliminar_evento(self, nombre):
-        if any(evento.nombre == nombre for evento in self.eventos):
-            self.eventos = [evento for evento in self.eventos if evento.nombre != nombre]
+        eventos_antes = len(self.eventos)
+        self.eventos = [evento for evento in self.eventos if evento.nombre != nombre]
+        if len(self.eventos) < eventos_antes:
             print("Evento eliminado exitosamente.")
         else:
             print("Evento no encontrado.")
@@ -87,11 +88,28 @@ class SportPlanningManager:
 
     # Función para eliminar un competidor de la lista de competidores
     def eliminar_competidor(self, nombre, apellido):
-        if any(competidor.nombre == nombre and competidor.apellido == apellido for competidor in self.competidores):
-            self.competidores = [competidor for competidor in self.competidores if not (competidor.nombre == nombre and competidor.apellido == apellido)]
+        competidores_antes = len(self.competidores)
+        self.competidores = [competidor for competidor in self.competidores if not (competidor.nombre == nombre and competidor.apellido == apellido)]
+        if len(self.competidores) < competidores_antes:
             print("Competidor eliminado exitosamente.")
         else:
             print("Competidor no encontrado.")
+
+    # Función para mostrar todos los eventos
+    def mostrar_eventos(self):
+        if self.eventos:
+            for evento in self.eventos:
+                evento.mostrar_eventos()
+        else:
+            print("No hay eventos para mostrar.")
+
+    # Función para mostrar todos los competidores
+    def mostrar_competidores(self):
+        if self.competidores:
+            for competidor in self.competidores:
+                competidor.mostrar_competidores()
+        else:
+            print("No hay competidores para mostrar.")
     
     # Función para modificar los detalles de un evento ya existente
     def modificar_evento(self, nombre, nuevo_nombre, nueva_fecha, nueva_hora):
@@ -156,17 +174,9 @@ def menu():
             apellido = input("Apellido del competidor a eliminar: ")
             manager.eliminar_competidor(nombre, apellido)
         elif opcion == "5":
-            if manager.eventos:
-                for evento in manager.eventos:
-                    evento.mostrar_eventos()
-            else:
-                print("No hay eventos para mostrar.")
+            manager.mostrar_eventos()
         elif opcion == "6":
-            if manager.competidores:
-                for competidor in manager.competidores:
-                    competidor.mostrar_competidores()
-            else:
-                print("No hay competidores para mostrar.")
+            manager.mostrar_competidores()
         elif opcion == "7":
             nombre = input("Nombre del evento a modificar: ")
             nuevo_nombre = input("Nuevo nombre del evento: ")
@@ -193,6 +203,7 @@ def menu():
 
 if __name__ == "__main__":
     menu()
+
 
 
 
