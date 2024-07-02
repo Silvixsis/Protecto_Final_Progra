@@ -8,8 +8,16 @@ class Evento:
         self.fecha = fecha
         self.hora = hora
 
-    def mostrar_eventos(self):
+    def mostrar_detalles(self):
         print(f"Nombre: {self.nombre}, Fecha: {self.fecha}, Hora: {self.hora}")
+
+    @staticmethod
+    def mostrar_eventos(eventos):
+        if eventos:
+            for evento in eventos:
+                evento.mostrar_detalles()
+        else:
+            print("No hay eventos para mostrar.")
 
 # Clase que representa un competidor
 class Competidor:
@@ -20,11 +28,19 @@ class Competidor:
         self.evento = evento
         self.categoria = categoria
 
-    def mostrar_competidores(self):
+    def mostrar_detalles(self):
         print(f"Nombre: {self.nombre} {self.apellido}, Edad: {self.edad}, Evento: {self.evento}, Categoría: {self.categoria}")
 
+    @staticmethod
+    def mostrar_competidores(competidores):
+        if competidores:
+            for competidor in competidores:
+                competidor.mostrar_detalles()
+        else:
+            print("No hay competidores para mostrar.")
+
 # Clase para manejar el almacenamiento de datos
-class ManejoDatos:
+class ManejoDatos:  
     @staticmethod
     def guardar_datos(eventos, competidores, archivo_eventos="eventos.json", archivo_competidores="competidores.json"):
         eventos_dict = [evento.__dict__ for evento in eventos]
@@ -59,7 +75,6 @@ class SportPlanningManager:
     def __init__(self):
         self.eventos, self.competidores = ManejoDatos.cargar_datos()
 
-    # Función para agregar un evento a la lista de eventos
     def agregar_evento(self, nombre, fecha, hora):
         if any(evento.nombre == nombre for evento in self.eventos):
             print("El evento ya existe.")
@@ -68,7 +83,6 @@ class SportPlanningManager:
             self.eventos.append(evento)
             print("Evento agregado exitosamente.")
 
-    # Función para eliminar un evento de la lista de eventos
     def eliminar_evento(self, nombre):
         eventos_antes = len(self.eventos)
         self.eventos = [evento for evento in self.eventos if evento.nombre != nombre]
@@ -77,7 +91,6 @@ class SportPlanningManager:
         else:
             print("Evento no encontrado.")
 
-    # Función para agregar un competidor a la lista de competidores
     def agregar_competidor(self, nombre, apellido, edad, evento, categoria):
         if any(competidor.nombre == nombre and competidor.apellido == apellido for competidor in self.competidores):
             print("El competidor ya existe.")
@@ -86,7 +99,6 @@ class SportPlanningManager:
             self.competidores.append(competidor)
             print("Competidor agregado exitosamente.")
 
-    # Función para eliminar un competidor de la lista de competidores
     def eliminar_competidor(self, nombre, apellido):
         competidores_antes = len(self.competidores)
         self.competidores = [competidor for competidor in self.competidores if not (competidor.nombre == nombre and competidor.apellido == apellido)]
@@ -94,24 +106,7 @@ class SportPlanningManager:
             print("Competidor eliminado exitosamente.")
         else:
             print("Competidor no encontrado.")
-
-    # Función para mostrar todos los eventos
-    def mostrar_eventos(self):
-        if self.eventos:
-            for evento in self.eventos:
-                evento.mostrar_eventos()
-        else:
-            print("No hay eventos para mostrar.")
-
-    # Función para mostrar todos los competidores
-    def mostrar_competidores(self):
-        if self.competidores:
-            for competidor in self.competidores:
-                competidor.mostrar_competidores()
-        else:
-            print("No hay competidores para mostrar.")
     
-    # Función para modificar los detalles de un evento ya existente
     def modificar_evento(self, nombre, nuevo_nombre, nueva_fecha, nueva_hora):
         for evento in self.eventos:
             if evento.nombre == nombre:
@@ -122,7 +117,6 @@ class SportPlanningManager:
                 return
         print("Evento no encontrado.")
 
-    # Función para modificar los detalles de un competidor ya existente
     def modificar_competidor(self, nombre, apellido, nuevo_nombre, nuevo_apellido, nueva_edad, nuevo_evento, nueva_categoria):
         for competidor in self.competidores:
             if competidor.nombre == nombre and competidor.apellido == apellido:
@@ -174,9 +168,9 @@ def menu():
             apellido = input("Apellido del competidor a eliminar: ")
             manager.eliminar_competidor(nombre, apellido)
         elif opcion == "5":
-            manager.mostrar_eventos()
+            Evento.mostrar_eventos(manager.eventos)
         elif opcion == "6":
-            manager.mostrar_competidores()
+            Competidor.mostrar_competidores(manager.competidores)
         elif opcion == "7":
             nombre = input("Nombre del evento a modificar: ")
             nuevo_nombre = input("Nuevo nombre del evento: ")
